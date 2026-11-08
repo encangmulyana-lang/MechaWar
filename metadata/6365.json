@@ -1,0 +1,15 @@
+{
+  "name": "MECHA WAR #6365",
+  "description": "MECHA WAR \u2014 7,777 combat mechas on BNB Chain. Each wallet's first mecha is FREE (while 777 free mints last), then 0.0003 BNB per mint. Six classes: Scout, Vanguard, Titan, Warlord, Prime, and the mythic Omega.",
+  "image": "https://mechawar.online/images/uncommon.svg",
+  "attributes": [
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    },
+    {
+      "trait_type": "Class",
+      "value": "Vanguard"
+    }
+  ]
+}
