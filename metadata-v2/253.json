@@ -1,0 +1,15 @@
+{
+  "name": "MechaWar #253",
+  "description": "MechaWar Forge v2 \u2014 7,777 combat mechas on BNB Chain. Each wallet's first mecha is FREE, then 0.0003 BNB per mint. Forge lower tiers up the ladder: 3 Scout to 1 Vanguard, 2 Vanguard to 1 Titan, 2 Titan to 1 Warlord, 2 Warlord to 1 Prime, 2 Prime to 1 Omega. Six classes: Scout, Vanguard, Titan, Warlord, Prime, and the mythic Omega.",
+  "image": "https://mechawar.online/images/uncommon.svg",
+  "attributes": [
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    },
+    {
+      "trait_type": "Class",
+      "value": "Vanguard"
+    }
+  ]
+}
