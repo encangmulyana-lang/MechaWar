@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Market — MECHA WAR Forge v2</title>
+<meta name="description" content="Trade Mecha War v2 mechas: list your mecha, set your price, or buy from another pilot. Escrow market, 5% fee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a class="logo" href="index.html">MECHA<b>WAR</b> <span class="v2">FORGE v2</span></a>
+    <nav class="main">
+      <a href="index.html#arsenal" data-en="Arsenal" data-ja="アーセナル" data-zh="机甲库" data-ko="아스날">Arsenal</a>
+      <a href="forge.html" data-en="Forge" data-ja="フォージ" data-zh="熔炉" data-ko="포지">Forge</a>
+      <a href="claim.html" data-en="Claim $MECH" data-ja="$MECHを請求" data-zh="领取 $MECH" data-ko="$MECH 청구">Claim $MECH</a>
+      <a href="market.html" class="active" data-en="Market" data-ja="マーケット" data-zh="市场" data-ko="마켓">Market</a>
+      <a href="index.html#roadmap" data-en="Roadmap" data-ja="ロードマップ" data-zh="路线图" data-ko="로드맵">Roadmap</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="actions">
+      <button class="langbtn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="langbtn" data-lang="ja" onclick="setLang('ja')">JA</button>
+      <button class="langbtn" data-lang="zh" onclick="setLang('zh')">ZH</button>
+      <button class="langbtn" data-lang="ko" onclick="setLang('ko')">KO</button>
+      <button class="btn small" id="connectBtn" onclick="connectWallet()" data-en="CONNECT WALLET" data-ja="ウォレット接続" data-zh="连接钱包" data-ko="지갑 연결">CONNECT WALLET</button>
+      <button id="burger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+    </div>
+  </div>
+  <div id="mobileMenu">
+    <div class="mm-row">
+      <button class="langbtn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="langbtn" data-lang="ja" onclick="setLang('ja')">JA</button>
+      <button class="langbtn" data-lang="zh" onclick="setLang('zh')">ZH</button>
+      <button class="langbtn" data-lang="ko" onclick="setLang('ko')">KO</button>
+    </div>
+    <a href="index.html#arsenal" data-en="Arsenal" data-ja="アーセナル" data-zh="机甲库" data-ko="아스날">Arsenal</a>
+    <a href="forge.html" data-en="Forge" data-ja="フォージ" data-zh="熔炉" data-ko="포지">Forge</a>
+    <a href="claim.html" data-en="Claim $MECH" data-ja="$MECHを請求" data-zh="领取 $MECH" data-ko="$MECH 청구">Claim $MECH</a>
+    <a href="market.html" class="active" data-en="Market" data-ja="マーケット" data-zh="市场" data-ko="마켓">Market</a>
+    <a href="index.html#roadmap" data-en="Roadmap" data-ja="ロードマップ" data-zh="路线图" data-ko="ロード맵">Roadmap</a>
+  </div>
+</header>
+
+<main class="wrap">
+<section class="reveal">
+  <div class="label" data-en="Market" data-ja="マーケット" data-zh="市场" data-ko="마켓">Market</div>
+  <h2 data-en-html="TRADE <span>STEEL.</span>" data-ja-html="鋼鉄を<span>取引せよ。</span>" data-zh-html="交易<span>钢铁。</span>" data-ko-html="강철을 <span>거래하라.</span>">TRADE <span>STEEL.</span></h2>
+  <p class="muted" data-en="List your mecha, set your price, or buy one straight from another pilot. The market holds the NFT in escrow until it sells — cancel any time and it comes back to your wallet. Market fee 5%. Royalty 5%." data-ja="メカを出品し、価格を決め、他のパイロットから直接買う。マーケットは売れるまで NFT をエスクローで保持します — いつでもキャンセルでき、ウォレットに戻ります。マーケット手数料5%。ロイヤリティ5%。" data-zh="上架你的机甲、定价，或直接从其他机师手中购买。市场在售出前以托管方式持有 NFT——随时可以取消，NFT 将返回你的钱包。市场手续费 5%。版税 5%。" data-ko="메카를 상장하고 가격을 정하거나 다른 파일럿에게서 직접 구매하세요. 마켓은 판매될 때까지 NFT를 에스크로로 보관합니다 — 언제든 취소하면 지갑으로 돌아옵니다. 마켓 수수료 5%. 로열티 5%.">List your mecha, set your price, or buy one straight from another pilot. The market holds the NFT in escrow until it sells — cancel any time and it comes back to your wallet. Market fee 5%. Royalty 5%.</p>
+
+  <div style="height:20px"></div>
+  <div class="hud">
+    <div class="label" data-en="List your mecha" data-ja="メカを出品" data-zh="上架你的机甲" data-ko="메카 상장">List your mecha</div>
+    <div class="field">
+      <label data-en="Token ID" data-ja="トークンID" data-zh="代币 ID" data-ko="토큰 ID">Token ID</label>
+      <input type="number" id="listTokenId" min="1" max="7777" placeholder="1–7777">
+      <label data-en="Price (BNB)" data-ja="価格（BNB）" data-zh="价格（BNB）" data-ko="가격 (BNB)">Price (BNB)</label>
+      <input type="text" id="listPrice" placeholder="0.001">
+      <div style="height:12px"></div>
+      <button class="btn block" id="listBtn" onclick="listNow()" data-en="LIST" data-ja="出品" data-zh="上架" data-ko="상장">LIST</button>
+    </div>
+    <div id="marketMsg" class="msg"></div>
+    <div class="warn" data-en="No browser wallet? Open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet) and tap CONNECT WALLET." data-ja="ブラウザウォレットがありませんか？MetaMask / Trust Wallet / Binance Wallet のアプリ内ブラウザでこのサイトを開き、CONNECT WALLET をタップしてください。" data-zh="没有浏览器钱包？请在钱包应用内浏览器（MetaMask / Trust Wallet / Binance Wallet）中打开本网站，然后点击 CONNECT WALLET。" data-ko="브라우저 지갑이 없나요? MetaMask / Trust Wallet / Binance Wallet 앱 내 브라우저에서 이 사이트를 열고 CONNECT WALLET을 누르세요.">No browser wallet? Open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet) and tap CONNECT WALLET.</div>
+  </div>
+
+  <div style="height:28px"></div>
+  <div class="label" data-en="Live listings" data-ja="出品中" data-zh="在售列表" data-ko="판매 중">Live listings</div>
+  <div style="height:14px"></div>
+  <div class="mkt-grid" id="marketGrid"><div class="mkt-note">Loading listings…</div></div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flogo">MECHA<b>WAR</b></div>
+    <p data-en="Battle mechas on BNB Chain · Forge v2 · First mint free" data-ja="BNBチェーンのバトルメカ · Forge v2 · 初回ミント無料" data-zh="BNB 链上的战斗机甲 · Forge v2 · 首次铸造免费" data-ko="BNB 체인의 배틀 메카 · Forge v2 · 첫 민팅 무료">Battle mechas on BNB Chain · Forge v2 · First mint free</p>
+    <div class="links"><a href="https://x.com/mechawar_" target="_blank">@mechawar_</a><a href="index.html">Home</a><a href="forge.html">Forge</a><a href="claim.html">Claim $MECH</a></div>
+    <p class="muted" style="margin-top:22px;font-size:12px">Market contract: <span id="marketFoot">0x0000000000000000000000000000000000000000</span><br>
+    <span data-en="The market opens after the v2 contracts deploy." data-ja="マーケットは v2 コントラクトのデプロイ後に開きます。" data-zh="市场在 v2 合约部署后开启。" data-ko="마켓은 v2 컨트랙트 배포 후에 열립니다.">The market opens after the v2 contracts deploy.</span></p>
+  </div>
+</footer>
+<button id="toTop" aria-label="Back to top">↑</button>
+
+<script src="shared.js"></script>
+<script>
+/* Market page — getListedIds / getListing, tokenURI metadata fetch,
+   buy/list/cancel/updatePrice, setApprovalForAll. All txs via sendTx
+   (buy-fix). Placeholder-safe until v2 deploys. */
+document.getElementById("marketFoot").textContent = MARKET;
+async function refresh(){ loadMarket(); }
+async function onConnect(){ loadMarket(); }
+
+async function loadMarket(){
+  const grid = document.getElementById("marketGrid");
+  if(IS_PLACEHOLDER){
+    grid.innerHTML = "<div class='mkt-note'>" + STR[LANG].comingSoon + "</div>";
+    return;
+  }
+  grid.innerHTML = "<div class='mkt-note'>Loading listings…</div>";
+  const res = await rpcCall(MARKET, SEL_LISTED);
+  if(!res){ grid.innerHTML = "<div class='mkt-note'>Could not load listings — check your connection and refresh.</div>"; return; }
+  let ids = [];
+  try{ ids = ethers.AbiCoder.defaultAbiCoder().decode(["uint256[]"], res)[0].map(x=>Number(x)); }
+  catch(e){ grid.innerHTML = "<div class='mkt-note'>Could not load listings — check your connection and refresh.</div>"; return; }
+  if(!ids.length){ grid.innerHTML = "<div class='mkt-note'>No listings yet — be the first to list your mecha.</div>"; return; }
+  grid.innerHTML = "";
+  for(const id of ids){
+    const lres = await rpcCall(MARKET, SEL_LISTING + id.toString(16).padStart(64,"0"));
+    if(!lres) continue;
+    let seller, price, active;
+    try{ [seller, price, active] = ethers.AbiCoder.defaultAbiCoder().decode(["address","uint256","bool"], lres); }catch(e){ continue; }
+    if(!active) continue;
+    let name = "MECHA WAR #" + id, img = "images/scout.webp", rarity = "";
+    const tres = await rpcCall(CONTRACT, SEL_TIEROF + id.toString(16).padStart(64,"0"));
+    if(tres){
+      try{ const tier = Number(ethers.AbiCoder.defaultAbiCoder().decode(["uint8"], tres)[0]); const t = TIERS[tier] || TIERS[0]; img = t.img; rarity = t.rarity + " — " + t.name; }catch(e){}
+    }
+    const priceBnb = fmtBnb(price);
+    const mine = userAddr && seller.toLowerCase() === userAddr.toLowerCase();
+    const card = document.createElement("div"); card.className = "mkt-card";
+    card.innerHTML = '<img src="'+img+'" alt="'+name+'"><div class="mkt-body"><span class="rarity" style="color:var(--green);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700">■ '+(rarity || "Mecha")+'</span><h3>'+name+'</h3><div class="mkt-price">'+priceBnb+' BNB</div><div class="mkt-seller">Seller: '+shortAddr(seller)+'</div><div class="mkt-row">'+(mine ? '<button class="btn ghost" onclick="cancelNow('+id+')">CANCEL</button><button class="btn ghost" onclick="updatePriceNow('+id+')">UPDATE PRICE</button>' : '<button class="btn" onclick="buyNow('+id+',&quot;'+price.toString()+'&quot;)">BUY</button>')+'</div></div>';
+    grid.appendChild(card);
+  }
+  if(!grid.children.length){ grid.innerHTML = "<div class='mkt-note'>No listings yet — be the first to list your mecha.</div>"; }
+}
+function noWalletMsgMkt(){
+  const m = document.getElementById("marketMsg");
+  m.className = "warn";
+  m.textContent = STR[LANG].noWallet;
+}
+async function listNow(){
+  const msg = document.getElementById("marketMsg");
+  if(IS_PLACEHOLDER){ msg.className = "warn"; msg.textContent = STR[LANG].comingSoon; return; }
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
+  if(!signer){ await connectWallet(); if(!signer) return; }
+  const id = parseInt(document.getElementById("listTokenId").value);
+  const priceStr = document.getElementById("listPrice").value;
+  if(!id || id < 1 || id > 7777){ msg.textContent = "Token ID must be 1–7,777."; return; }
+  let priceWei;
+  try{ priceWei = ethers.parseEther(priceStr); }catch(e){ priceWei = 0n; }
+  if(priceWei <= 0n){ msg.textContent = "Enter a price above 0 BNB."; return; }
+  try{
+    const ores = await rpcCall(CONTRACT, SEL_OWNEROF + id.toString(16).padStart(64,"0"));
+    if(!ores){ msg.textContent = "Could not check the token owner — try again."; return; }
+    const tokenOwner = ethers.AbiCoder.defaultAbiCoder().decode(["address"], ores)[0];
+    if(tokenOwner.toLowerCase() !== userAddr.toLowerCase()){ msg.textContent = "You do not own this token."; return; }
+    const ares = await rpcCall(CONTRACT, SEL_ISAPPROVED + userAddr.slice(2).padStart(64,"0") + MARKET.slice(2).padStart(64,"0"));
+    const approved = ares ? ethers.AbiCoder.defaultAbiCoder().decode(["bool"], ares)[0] : false;
+    if(!approved){
+      msg.textContent = "Approving the market to hold your NFT first…";
+      const ifaceA = new ethers.Interface(["function setApprovalForAll(address operator, bool approved)"]);
+      const txA = await sendTx({to:CONTRACT, data:ifaceA.encodeFunctionData("setApprovalForAll",[MARKET,true])}, 100000);
+      await txA.wait();
+    }
+    const iface = new ethers.Interface(["function list(uint256 tokenId, uint256 price)"]);
+    const tx = await sendTx({to:MARKET, data:iface.encodeFunctionData("list",[id, priceWei])}, 300000);
+    msg.textContent = "Transaction sent: " + tx.hash + " — waiting for confirmation…";
+    await tx.wait();
+    msg.textContent = "Listed! Tx: " + tx.hash;
+    loadMarket();
+  }catch(e){ msg.className = "warn"; msg.textContent = "List failed: " + txErrMsg(e); }
+}
+async function buyNow(id, priceWei){
+  const msg = document.getElementById("marketMsg");
+  if(IS_PLACEHOLDER) return;
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
+  if(!signer){ await connectWallet(); if(!signer) return; }
+  try{
+    const iface = new ethers.Interface(["function buy(uint256 tokenId)"]);
+    const tx = await sendTx({to:MARKET, data:iface.encodeFunctionData("buy",[id]), value:BigInt(priceWei)}, 300000);
+    msg.textContent = "Transaction sent: " + tx.hash + " — waiting for confirmation…";
+    await tx.wait();
+    msg.textContent = "Bought! Tx: " + tx.hash;
+    loadMarket();
+  }catch(e){ msg.className = "warn"; msg.textContent = "Buy failed: " + txErrMsg(e); }
+}
+async function cancelNow(id){
+  const msg = document.getElementById("marketMsg");
+  if(IS_PLACEHOLDER) return;
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
+  if(!signer){ await connectWallet(); if(!signer) return; }
+  try{
+    const iface = new ethers.Interface(["function cancel(uint256 tokenId)"]);
+    const tx = await sendTx({to:MARKET, data:iface.encodeFunctionData("cancel",[id])}, 200000);
+    msg.textContent = "Transaction sent: " + tx.hash + " — waiting for confirmation…";
+    await tx.wait();
+    msg.textContent = "Listing cancelled — your NFT is back in your wallet. Tx: " + tx.hash;
+    loadMarket();
+  }catch(e){ msg.className = "warn"; msg.textContent = "Cancel failed: " + txErrMsg(e); }
+}
+async function updatePriceNow(id){
+  const msg = document.getElementById("marketMsg");
+  if(IS_PLACEHOLDER) return;
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
+  if(!signer){ await connectWallet(); if(!signer) return; }
+  const v = window.prompt("New price in BNB:");
+  if(v === null) return;
+  let priceWei;
+  try{ priceWei = ethers.parseEther(v); }catch(e){ priceWei = 0n; }
+  if(priceWei <= 0n){ msg.textContent = "Enter a price above 0 BNB."; return; }
+  try{
+    const iface = new ethers.Interface(["function updatePrice(uint256 tokenId, uint256 newPrice)"]);
+    const tx = await sendTx({to:MARKET, data:iface.encodeFunctionData("updatePrice",[id, priceWei])}, 200000);
+    msg.textContent = "Transaction sent: " + tx.hash + " — waiting for confirmation…";
+    await tx.wait();
+    msg.textContent = "Price updated! Tx: " + tx.hash;
+    loadMarket();
+  }catch(e){ msg.className = "warn"; msg.textContent = "Update failed: " + txErrMsg(e); }
+}
+initLang(); initChrome();
+refresh();
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Forge — MECHA WAR Forge v2</title>
+<meta name="description" content="Forge your Mecha War mechas: 3 Scouts into 1 Vanguard, all the way to the 39 Mythic Omegas. First 100 forges gas-only, then 1,000 $MECH burns per forge.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a class="logo" href="index.html">MECHA<b>WAR</b> <span class="v2">FORGE v2</span></a>
+    <nav class="main">
+      <a href="index.html#arsenal" data-en="Arsenal" data-ja="アーセナル" data-zh="机甲库" data-ko="아스날">Arsenal</a>
+      <a href="forge.html" class="active" data-en="Forge" data-ja="フォージ" data-zh="熔炉" data-ko="포지">Forge</a>
+      <a href="claim.html" data-en="Claim $MECH" data-ja="$MECHを請求" data-zh="领取 $MECH" data-ko="$MECH 청구">Claim $MECH</a>
+      <a href="market.html" data-en="Market" data-ja="マーケット" data-zh="市场" data-ko="마켓">Market</a>
+      <a href="index.html#roadmap" data-en="Roadmap" data-ja="ロードマップ" data-zh="路线图" data-ko="로드맵">Roadmap</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="actions">
+      <button class="langbtn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="langbtn" data-lang="ja" onclick="setLang('ja')">JA</button>
+      <button class="langbtn" data-lang="zh" onclick="setLang('zh')">ZH</button>
+      <button class="langbtn" data-lang="ko" onclick="setLang('ko')">KO</button>
+      <button class="btn small" id="connectBtn" onclick="connectWallet()" data-en="CONNECT WALLET" data-ja="ウォレット接続" data-zh="连接钱包" data-ko="지갑 연결">CONNECT WALLET</button>
+      <button id="burger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+    </div>
+  </div>
+  <div id="mobileMenu">
+    <div class="mm-row">
+      <button class="langbtn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="langbtn" data-lang="ja" onclick="setLang('ja')">JA</button>
+      <button class="langbtn" data-lang="zh" onclick="setLang('zh')">ZH</button>
+      <button class="langbtn" data-lang="ko" onclick="setLang('ko')">KO</button>
+    </div>
+    <a href="index.html#arsenal" data-en="Arsenal" data-ja="アーセナル" data-zh="机甲库" data-ko="아스날">Arsenal</a>
+    <a href="forge.html" class="active" data-en="Forge" data-ja="フォージ" data-zh="熔炉" data-ko="포지">Forge</a>
+    <a href="claim.html" data-en="Claim $MECH" data-ja="$MECHを請求" data-zh="领取 $MECH" data-ko="$MECH 청구">Claim $MECH</a>
+    <a href="market.html" data-en="Market" data-ja="マーケット" data-zh="市场" data-ko="마켓">Market</a>
+    <a href="index.html#roadmap" data-en="Roadmap" data-ja="ロードマップ" data-zh="路线图" data-ko="ロード맵">Roadmap</a>
+  </div>
+</header>
+
+<main class="wrap">
+<section class="reveal">
+  <div class="label" data-en="The forge" data-ja="フォージ" data-zh="熔炉" data-ko="포지">The forge</div>
+  <h2 data-en-html="BURN LOW. <span class=\"amber\">RISE HIGH.</span>" data-ja-html="低いのをバーンして、<span class=\"amber\">高く上がれ。</span>" data-zh-html="燃烧低级，<span class=\"amber\">晋升高级。</span>" data-ko-html="낮은 것을 소각하고, <span class=\"amber\">높이 오르라.</span>">BURN LOW. <span class="amber">RISE HIGH.</span></h2>
+  <p class="muted" data-en="Pick mechas of the same tier and burn them into one mecha of the next tier. Forged mechas are minted fresh with new token IDs — and they can claim their own 10,000 $MECH afterwards. Omega cannot be forged further. Only 39 Omegas will ever exist." data-ja="同じティアのメカを選んで、次のティアのメカ1体にバーンして鍛造。鍛造されたメカは新しいトークンIDでミントされ、その後自分の10,000 $MECHを請求できます。オメガはそれ以上鍛造できません。オメガは39体のみ。" data-zh="选择相同等级的机甲，燃烧它们熔铸成一台更高等级的机甲。熔铸出的机甲以全新代币 ID 铸造，之后还可以领取自己的 10,000 $MECH。Omega 无法继续熔铸。Omega 仅有 39 台。" data-ko="같은 티어의 메카를 선택해 다음 티어의 메카 하나로 소각해 단련하세요. 단련된 메카는 새 토큰 ID로 민팅되며 이후 자신의 10,000 $MECH를 청구할 수 있습니다. 오메가는 더 단련할 수 없습니다. 오메가는 단 39대만 존재합니다.">Pick mechas of the same tier and burn them into one mecha of the next tier. Forged mechas are minted fresh with new token IDs — and they can claim their own 10,000 $MECH afterwards. Omega cannot be forged further. Only 39 Omegas will ever exist.</p>
+
+  <div class="hud" style="margin-top:18px">
+    <div class="stat-line"><b id="forgeCount">—</b><span data-en="Forges so far" data-ja="これまでのフォージ回数" data-zh="迄今锻造次数" data-ko="지금까지 포지 횟수">Forges so far</span></div>
+    <div class="stat-line"><b id="forgeFee">—</b><span data-en="Forge fee now" data-ja="現在のフォージ手数料" data-zh="当前锻造费用" data-ko="현재 포지 수수료">Forge fee now</span></div>
+    <div class="stat-line"><b id="mechBal">—</b><span data-en="Your $MECH balance" data-ja="あなたの $MECH 残高" data-zh="你的 $MECH 余额" data-ko="내 $MECH 잔액">Your $MECH balance</span></div>
+  </div>
+
+  <div class="ladder" id="ladder"></div>
+
+  <div style="height:24px"></div>
+  <button class="btn" id="scanBtn" onclick="scanForge()" data-en="SHOW MY MECHAS" data-ja="自分のメカを表示" data-zh="显示我的机甲" data-ko="내 메카 표시">SHOW MY MECHAS</button>
+  <div id="pageMsg" class="msg"></div>
+  <div class="warn" data-en="No browser wallet? Open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet) and tap CONNECT WALLET. Claim your $MECH on the claim page first — after the first 100 forges, each forge burns 1,000 $MECH, and the site will ask you to approve that spend once." data-ja="ブラウザウォレットがありませんか？MetaMask / Trust Wallet / Binance Wallet のアプリ内ブラウザでこのサイトを開き、CONNECT WALLET をタップしてください。まず請求ページで $MECH を請求してください — 最初の100回のフォージの後、1回のフォージで1,000 $MECHをバーンし、その支出の承認を1回求められます。" data-zh="没有浏览器钱包？请在钱包应用内浏览器（MetaMask / Trust Wallet / Binance Wallet）中打开本网站，然后点击 CONNECT WALLET。请先在领取页面领取 $MECH——前 100 次锻造之后，每次锻造燃烧 1,000 $MECH，网站会要求你一次性批准这笔支出。" data-ko="브라우저 지갑이 없나요? MetaMask / Trust Wallet / Binance Wallet 앱 내 브라우저에서 이 사이트를 열고 CONNECT WALLET을 누르세요. 먼저 청구 페이지에서 $MECH를 청구하세요 — 처음 100번의 포지 이후 포지마다 1,000 $MECH가 소각되며, 사이트에서 해당 지출 승인을 한 번 요청합니다.">No browser wallet? Open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet) and tap CONNECT WALLET. Claim your $MECH on the claim page first — after the first 100 forges, each forge burns 1,000 $MECH, and the site will ask you to approve that spend once.</div>
+
+  <div id="forgeList"></div>
+  <div id="forgeBox" style="display:none">
+    <div class="note" id="forgePreview">—</div>
+    <button class="btn amber" id="forgeBtn" onclick="forgeNow()" data-en="2 — FORGE" data-ja="2 — フォージ" data-zh="2 — 锻造" data-ko="2 — 포지">2 — FORGE</button>
+  </div>
+  <div id="forgeMsg" class="msg"></div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flogo">MECHA<b>WAR</b></div>
+    <p data-en="Battle mechas on BNB Chain · Forge v2 · First mint free" data-ja="BNBチェーンのバトルメカ · Forge v2 · 初回ミント無料" data-zh="BNB 链上的战斗机甲 · Forge v2 · 首次铸造免费" data-ko="BNB 체인의 배틀 메카 · Forge v2 · 첫 민팅 무료">Battle mechas on BNB Chain · Forge v2 · First mint free</p>
+    <div class="links"><a href="https://x.com/mechawar_" target="_blank">@mechawar_</a><a href="index.html">Home</a><a href="claim.html">Claim $MECH</a><a href="market.html">Market</a></div>
+    <p class="muted" style="margin-top:22px;font-size:12px"><span data-en="The forge opens after the v2 contracts deploy." data-ja="フォージは v2 コントラクトのデプロイ後に開きます。" data-zh="熔炉在 v2 合约部署后开启。" data-ko="포지는 v2 컨트랙트 배포 후에 열립니다.">The forge opens after the v2 contracts deploy.</span></p>
+  </div>
+</footer>
+<button id="toTop" aria-label="Back to top">↑</button>
+
+<script src="shared.js"></script>
+<script>
+/* Forge page. Recipes: 3 Scout -> 1 Vanguard, 2 Vanguard -> 1 Titan,
+   2 Titan -> 1 Warlord, 2 Warlord -> 1 Prime, 2 Prime -> 1 Omega.
+   First 100 forges gas-only; after that forgeFee() = 1,000 $MECH,
+   paid via $MECH allowance to the NFT contract. */
+const NEED = [3, 2, 2, 2, 2]; /* inputs per tier; Omega (5) cannot forge */
+let owned = [], selected = new Set(), curFee = 0n;
+
+document.getElementById("ladder").innerHTML = NEED.map((n,i)=>{
+  const a = TIERS[i], b = TIERS[i+1];
+  return '<div class="rung"><div class="in"><span class="n">'+n+'×</span><img src="'+a.img+'" alt="'+a.name+'"><div><b>'+a.name+'</b><span>'+a.rarity+' · max '+a.cap.toLocaleString()+'</span></div></div>'+
+  '<div class="arrow">▼ FORGE ▼</div>'+
+  '<div class="out"><img src="'+b.img+'" alt="'+b.name+'"><div><b>1× '+b.name+'</b><span>'+b.rarity+' · max '+b.cap.toLocaleString()+'</span></div></div></div>'+
+  (i < NEED.length-1 ? '<div class="connector">↓</div>' : '');
+}).join("");
+
+async function refresh(){
+  if(IS_PLACEHOLDER){ document.getElementById("forgeCount").textContent = "—"; document.getElementById("forgeFee").textContent = "—"; document.getElementById("mechBal").textContent = "—"; return; }
+  const fr = await rpcCall(CONTRACT, SEL_FORGECOUNT);
+  if(fr) document.getElementById("forgeCount").textContent = parseInt(fr, 16).toString();
+  const fe = await rpcCall(CONTRACT, SEL_FORGEFEE);
+  if(fe){ curFee = BigInt(fe); document.getElementById("forgeFee").textContent = curFee === 0n ? STR[LANG].forgeFree : STR[LANG].forgeBurn; }
+  if(userAddr){
+    const b = await rpcCall(MECH_TOKEN, SEL_BALANCEOF + userAddr.slice(2).padStart(64,"0"));
+    if(b) document.getElementById("mechBal").textContent = (Number(BigInt(b)) / 1e18).toLocaleString() + " $MECH";
+  }
+}
+async function onConnect(){ refresh(); scanForge(); }
+
+async function scanForge(){
+  const msg = document.getElementById("pageMsg"), list = document.getElementById("forgeList");
+  if(IS_PLACEHOLDER){ msg.className = "warn"; msg.textContent = STR[LANG].comingSoon; list.innerHTML = ""; return; }
+  if(!signer){ const ok = await connectWallet(); if(!ok) return; }
+  msg.className = ""; msg.textContent = "Scanning your mechas…";
+  list.innerHTML = "";
+  try{
+    owned = await scanOwnedIds();
+    renderForgeList();
+    msg.textContent = owned.length ? owned.length + " mecha(s) in your wallet. Tap mechas of the same tier to forge." : "No mechas in this wallet yet — mint first.";
+  }catch(e){ msg.className = "warn"; msg.textContent = "Scan failed: " + txErrMsg(e); }
+}
+function renderForgeList(){
+  const list = document.getElementById("forgeList");
+  selected = new Set();
+  if(!owned.length){ list.innerHTML = ""; document.getElementById("forgeBox").style.display = "none"; return; }
+  list.innerHTML = '<div class="picker-grid">' + owned.map(o=>{
+    const t = TIERS[o.tier] || TIERS[0];
+    return '<div class="pick" data-id="'+o.id+'" data-tier="'+o.tier+'" onclick="toggleForgePick('+o.id+',this)"><span class="chk">✓</span><img src="'+t.img+'" alt="MECHA WAR #'+o.id+'"><div class="pid">MECHA WAR #'+o.id+'<br><span style="color:'+t.color+'">'+t.rarity+' — '+t.name+'</span></div></div>';
+  }).join("") + "</div>";
+  document.getElementById("forgeBox").style.display = "block";
+  updateForgePreview();
+}
+function toggleForgePick(id, el){
+  if(selected.has(id)){ selected.delete(id); el.classList.remove("sel"); }
+  else { selected.add(id); el.classList.add("sel"); }
+  updateForgePreview();
+}
+function forgeTarget(){
+  const ids = [...selected];
+  if(!ids.length) return {ok:false, reason:"Select mechas of the same tier to forge."};
+  const tiers = ids.map(id=>owned.find(o=>o.id===id).tier);
+  const tier = tiers[0];
+  if(!tiers.every(t=>t===tier)) return {ok:false, reason:"All selected mechas must be the same tier."};
+  if(tier >= 5) return {ok:false, reason:"Omega cannot be forged further."};
+  const need = NEED[tier];
+  if(ids.length !== need) return {ok:false, reason:"Select exactly " + need + " × " + TIERS[tier].name + " to forge 1 × " + TIERS[tier+1].name + "."};
+  return {ok:true, tier, need, ids};
+}
+function updateForgePreview(){
+  const p = document.getElementById("forgePreview");
+  const t = forgeTarget();
+  if(!t.ok){ p.textContent = t.reason; return; }
+  p.innerHTML = "Forge " + t.need + " × " + TIERS[t.tier].rarity + " " + TIERS[t.tier].name +
+    " → 1 × " + TIERS[t.tier+1].rarity + " " + TIERS[t.tier+1].name +
+    " · Fee: " + (curFee === 0n ? "FREE (first 100 forges gas-only)" : "1,000 $MECH burned");
+}
+async function forgeNow(){
+  const msg = document.getElementById("forgeMsg");
+  if(IS_PLACEHOLDER){ msg.className = "warn"; msg.textContent = STR[LANG].comingSoon; return; }
+  const t = forgeTarget();
+  if(!t.ok){ msg.className = "warn"; msg.textContent = t.reason; return; }
+  if(!signer){ const ok = await connectWallet(); if(!ok) return; }
+  try{
+    if(curFee > 0n){
+      const res = await rpcCall(MECH_TOKEN, SEL_ALLOWANCE + userAddr.slice(2).padStart(64,"0") + CONTRACT.slice(2).padStart(64,"0"));
+      const allow = res ? BigInt(ethers.AbiCoder.defaultAbiCoder().decode(["uint256"], res)[0]) : 0n;
+      if(allow < curFee){
+        msg.className = ""; msg.textContent = "Approving 1,000 $MECH for the forge first…";
+        const ifaceA = new ethers.Interface(["function approve(address spender, uint256 amount)"]);
+        const txA = await sendTx({to:MECH_TOKEN, data:ifaceA.encodeFunctionData("approve",[CONTRACT, curFee])}, 100000);
+        await txA.wait();
+        msg.textContent = "Approved 1,000 $MECH for the forge. Now tap FORGE.";
+        return;
+      }
+    }
+    const iface = new ethers.Interface(["function forge(uint256[] tokenIds)"]);
+    const tx = await sendTx({to:CONTRACT, data:iface.encodeFunctionData("forge",[[...selected]])}, 400000);
+    msg.className = ""; msg.textContent = "Forge sent: " + tx.hash + " — waiting for confirmation…";
+    await tx.wait();
+    msg.textContent = "Forged! Your new " + TIERS[t.tier + 1].rarity + " " + TIERS[t.tier + 1].name + " is minted. Tx: " + tx.hash;
+    refresh(); scanForge();
+  }catch(e){ msg.className = "warn"; msg.textContent = "Forge failed: " + txErrMsg(e); }
+}
+initLang(); initChrome();
+refresh();
+</script>
+</body>
+</html>
